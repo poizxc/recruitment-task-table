@@ -1,8 +1,8 @@
 import React from 'react';
 import CompanyTableDataRow from './CompanyTableDataRow';
-export default ({ companies }) => (
+export default ({ visibleCompanies:companies }) => (
   <tbody>
-    {companies.length ? (
+    {companies ? (
       companies
         .sort((company, prevCompany) => company.baseInfo.id - prevCompany.baseInfo.id)
         .map(({ baseInfo, incomes }) => <CompanyTableDataRow key={baseInfo.id} baseInfo={baseInfo} incomes={incomes} />)

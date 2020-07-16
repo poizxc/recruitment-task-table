@@ -12,7 +12,7 @@ const getIncomes = (incomes) => {
         totalIncome: parseFloat(prev.totalIncome) + parseFloat(curr.value),
         lastMonthIncome: lessThanMonth(curr.date)
           ? parseFloat(prev.lastMonthIncome) + parseFloat(curr.value)
-          : parseFloat(prev.lastMonthIncome),
+          : prev.lastMonthIncome,
       };
     },
     { totalIncome: 0, lastMonthIncome: 0 },
@@ -43,9 +43,9 @@ export default ({ baseInfo, incomes }) => {
       <Cell>{baseInfo.id}</Cell>
       <Cell>{baseInfo.name}</Cell>
       <Cell>{baseInfo.city}</Cell>
-      <Cell>{totalIncome.toFixed(3)}</Cell>
-      <Cell>{avgIncome.toFixed(3)}</Cell>
-      <Cell>{lastMonthIncome.toFixed(3)}</Cell>
+      <Cell>{totalIncome.toFixed(2)}</Cell>
+      <Cell>{avgIncome.toFixed(2)}</Cell>
+      <Cell>{lastMonthIncome.toFixed(2)}</Cell>
     </Row>
   );
 };
