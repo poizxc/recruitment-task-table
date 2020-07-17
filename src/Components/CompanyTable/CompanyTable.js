@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from 'Config/Constants';
 import Spinner from 'Components/Spinner';
-import CompanyTableHeader from './CompanyTableHeader';
-import CompanyTableBody from './CompanyTableBody';
-import CompanyTableControls from './CompanyTableControls';
+import CompanyTableHeader from 'Components/CompanyTableHeader';
+import CompanyTableBody from 'Components/CompanyTableBody';
+import CompanyTableControls from 'Components/CompanyTableControls';
 import mockData from './mockData';
 import styled from 'styled-components';
 
@@ -64,13 +64,15 @@ export default () => {
   }, []);
   const Centered = styled.table`
     margin: 0 auto;
+    width:100%;
+    max-width:900px;
   `;
   return (
     <>
       {isLoading ? (
         <Spinner />
       ) : (
-        <>
+        <main>
           <Centered border="0" cellSpacing="0">
             <CompanyTableHeader />
             <CompanyTableBody visibleCompanies={companies[currentPage]} />
@@ -82,7 +84,7 @@ export default () => {
             handleCurrentPageChange={handleCurrentPageChange}
             possiblePages={companies.length}
           />
-        </>
+        </main>
       )}
     </>
   );

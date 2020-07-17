@@ -1,5 +1,5 @@
 import React from 'react';
-import CompanyTableDataRow from './CompanyTableDataRow';
+import CompanyTableDataRow from 'Components/CompanyTableRow';
 export default ({ visibleCompanies:companies }) => (
   <tbody>
     {companies ? (
