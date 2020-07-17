@@ -1,6 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import CompanyTableFilterInput from "Components/CompanyTableFilterInput"
+import CompanyTableFilterInput from 'Components/CompanyTableFilterInput';
+import CompanyTableSelectPagesInput from 'Components/CompanyTableSelectPagesInput';
+import CompanyTablePagination from 'Components/CompanyTablePagination';
+
+const Div = styled.div`
+padding-top: 20px;
+width: 100%;
+max-width: 900px;
+margin: 0 auto;
+`;
 export default ({
   companiesOnPage,
   currentPage,
@@ -11,27 +20,11 @@ export default ({
   handleFilterChange,
 }) => {
   const pages = Array.from({ length: possiblePages }, (x, i) => i);
-
-  const Div = styled.div`
-    padding-top: 20px;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-  `;
   return (
     <Div>
-      <select value={companiesOnPage} onChange={handleCompaniesOnPageChange}>
-        <option value={5}>5</option>
-        <option value={10}>10</option>
-        <option value={15}>15</option>
-      </select>
-      {/* todo extract this  and handle active*/}
-      {pages.map((pageNum) => (
-        <button active={currentPage === pageNum} key={pageNum} value={pageNum} onClick={handleCurrentPageChange}>
-          {pageNum + 1}
-        </button>
-      ))}
-      <CompanyTableFilterInput filter={ filter} handleFilterChange={handleFilterChange}/>
+      <CompanyTableSelectPagesInput companiesOnPage={companiesOnPage} handleCompaniesOnPageChange={handleCompaniesOnPageChange} />
+      <CompanyTablePagination pages={pages} currentPage={currentPage} handleCurrentPageChange={handleCurrentPageChange}/>
+      <CompanyTableFilterInput filter={filter} handleFilterChange={handleFilterChange} />
     </Div>
   );
 };

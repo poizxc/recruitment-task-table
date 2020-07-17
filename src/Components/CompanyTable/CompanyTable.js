@@ -8,15 +8,17 @@ import CompanyTableControls from 'Components/CompanyTableControls';
 import mockData from './mockData';
 import styled from 'styled-components';
 import moment from 'moment';
+
+//todo move to utils
 const lessThanMonth = (date) => {
   return moment(date).isAfter(moment().subtract(1, 'month'));
 };
 
-//todo rewrite
 const splitCompaniesIntoChunks = (companies, size) =>
   companies.length > size
     ? [companies.slice(0, size), ...splitCompaniesIntoChunks(companies.slice(size), size)]
     : [companies];
+
 const getIncomes = (incomes) => {
   const countedIncomes = incomes.reduce(
     (prev, curr) => ({
@@ -27,16 +29,27 @@ const getIncomes = (incomes) => {
     }),
     { totalIncome: 0, lastMonthIncome: 0 },
   );
-  return { ...countedIncomes, avgIncome: countedIncomes.totalIncome / incomes.length };
+  return {
+    totalIncome: countedIncomes.totalIncome,
+    avgIncome: countedIncomes.totalIncome / incomes.length,
+    lastMonthIncome: countedIncomes.lastMonthIncome,
+  };
 };
+const CenteredTable = styled.table`
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
+`;
 export default () => {
   const [companies, setCompanies] = useState([]);
   const [activeCompanies, setActiveCompanies] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
   const [companiesOnPage, setCompaniesOnPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(0);
   const [filter, setFilter] = useState('');
+  //todo extract constants
+  const [sorting, setSorting] = useState({ column: 'id', order: 'ASC' });
+
   const handleCompaniesOnPageChange = (event) => {
     setCompaniesOnPage(event.target.value);
     setActiveCompanies(splitCompaniesIntoChunks(companies.flat(), event.target.value));
@@ -46,26 +59,44 @@ export default () => {
   };
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
-    const filteredCompanies = companies
-      .flat()
-      .filter((company) =>
-        Object.keys(company).some((key) =>
-          Object.keys(company[key]).some((nestedKey) =>
-            String(company[key][nestedKey]).toLowerCase().includes(event.target.value.toLowerCase()),
+    const filteredCompanies = sortCompanies(
+      companies
+        .flat()
+        .filter((company) =>
+          Object.keys(company).some((key) =>
+            String(company[key]).toLowerCase().includes(event.target.value.toLowerCase()),
           ),
         ),
-      );
+      sorting.column,
+      sorting.order,
+    );
     setCurrentPage(0);
     setActiveCompanies(splitCompaniesIntoChunks(filteredCompanies, companiesOnPage));
   };
+  const sortCompanies = (companiesArr, column, order) => {
+    return companiesArr.flat().sort((company, nextCompany) => {
+      if (typeof company[column] === 'number') {
+        return order === 'ASC' ? company[column] - nextCompany[column] : nextCompany[column] - company[column];
+      }
+      return order === 'ASC'
+        ? company[column].localeCompare(nextCompany[column], 'en', { sensitivity: 'base' })
+        : nextCompany[column].localeCompare(company[column], 'en', { sensitivity: 'base' });
+    });
+  };
+  const handleSortingChange = (sortingObj) => {
+    const onlyOrderChanged = sortingObj.column === sorting.column;
+    const order = onlyOrderChanged ? (sorting.order === 'ASC' ? 'DESC' : 'ASC') : 'ASC';
+    setSorting({ ...sortingObj, order });
+    const { column } = sortingObj;
+    const sortedCompanies = sortCompanies(activeCompanies, column, order);
+    setCurrentPage(0);
+    setActiveCompanies(splitCompaniesIntoChunks(sortedCompanies, companiesOnPage));
+  };
   useEffect(() => {
-    //todo think about making it working faster eg. downloading only incomes for visible companies
     async function getCompanyData() {
       try {
         const { data: companiesData } = await axios.get(`${API_URL}/companies`);
-        const details = await getDetailedData(
-          companiesData.sort((company, nextCompany) => company.id - nextCompany.id),
-        );
+        const details = sortCompanies(await getDetailedData(companiesData), sorting.column, sorting.order);
         setActiveCompanies(splitCompaniesIntoChunks(details, companiesOnPage));
         setCompanies(details);
         setIsLoading(false);
@@ -75,13 +106,6 @@ export default () => {
         setActiveCompanies([]);
         setIsLoading(false);
       }
-      // setCompanies(
-      //   splitCompaniesIntoChunks(
-      //     mockData.sort((company, nextCompany) => company.id - nextCompany.id),
-      //     companiesOnPage,
-      //   ),
-      // );
-      // setIsLoading(false);
     }
 
     async function getDetailedData(companiesData) {
@@ -90,28 +114,24 @@ export default () => {
           const {
             data: { incomes },
           } = await axios.get(`${API_URL}/incomes/${company.id}`);
-          return { baseInfo: company, incomes: getIncomes(incomes) };
+          return { ...company, ...getIncomes(incomes) };
         }),
       );
     }
     getCompanyData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const Centered = styled.table`
-    margin: 0 auto;
-    width: 100%;
-    max-width: 900px;
-  `;
+
   return (
     <>
       {isLoading ? (
         <Spinner />
       ) : (
         <main>
-          <Centered border="0" cellSpacing="0">
-            <CompanyTableHeader />
+          <CenteredTable border="0" cellSpacing="0">
+            <CompanyTableHeader sorting={sorting} handleSortingChange={handleSortingChange} />
             <CompanyTableBody visibleCompanies={activeCompanies[currentPage]} />
-          </Centered>
+          </CenteredTable>
           <CompanyTableControls
             companiesOnPage={companiesOnPage}
             handleCompaniesOnPageChange={handleCompaniesOnPageChange}
