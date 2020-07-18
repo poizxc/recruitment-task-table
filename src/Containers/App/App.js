@@ -1,19 +1,7 @@
 import React from 'react';
 
 import CompanyTable from 'Components/CompanyTable';
-import styled from 'styled-components';
-import { SECONDARY_COLOR } from 'Config/Colors';
-const AppHeader = styled.header`
-  border-bottom: 2px solid ${SECONDARY_COLOR};
-  margin-bottom: 20px;
-`;
-const AppTitle = styled.h1`
-  text-align: center;
-`;
-const ReflectedSpan = styled.span`
-  transform: scaleX(-1);
-  display: inline-block;
-`;
+import { AppHeader, AppTitle, ReflectedSpan } from './AppStyles';
 function App() {
   return (
     <>

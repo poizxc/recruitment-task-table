@@ -5,37 +5,8 @@ import Spinner from 'Components/Spinner';
 import CompanyTableHeader from 'Components/CompanyTableHeader';
 import CompanyTableBody from 'Components/CompanyTableBody';
 import CompanyTableControls from 'Components/CompanyTableControls';
-import styled from 'styled-components';
 import { splitCompaniesIntoChunks, getIncomes } from 'Utils';
-import { SECONDARY_COLOR, MAIN_COLOR } from 'Config/Colors';
-
-const CenteredTable = styled.table`
-  width: 100%;
-  max-width: 900px;
-  border-collapse: collapse;
-  min-width: 600px;
-  margin: 0 auto;
-`;
-const Wrapper = styled.div`
-  overflow-x: auto;
-  &::-webkit-scrollbar {
-    -webkit-appearance: none;
-  }
-
-  &::-webkit-scrollbar:horizontal {
-    height: 15px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${MAIN_COLOR};
-    border-radius: 0px;
-  }
-
-  &::-webkit-scrollbar-track {
-    border-radius: 0px;
-    background-color: ${SECONDARY_COLOR};
-  }
-`;
+import { CenteredTable, Wrapper } from './CompanyTableStyles';
 export default () => {
   const [companies, setCompanies] = useState([]);
   const [activeCompanies, setActiveCompanies] = useState([]);
