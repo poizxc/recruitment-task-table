@@ -7,7 +7,12 @@ const COLUMNS = {
   avgIncome: 'average income',
   lastMonthIncome: 'last month income',
 };
-module.exports = {
+const ASC = 'ASC';
+const DESC = 'DESC';
+
+export {
   API_URL,
   COLUMNS,
+  ASC,
+  DESC,
 };

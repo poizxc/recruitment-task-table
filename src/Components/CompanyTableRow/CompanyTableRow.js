@@ -2,21 +2,25 @@ import React from 'react';
 import styled from 'styled-components';
 import { SECONDARY_COLOR, BRIGHT_COLOR, MAIN_COLOR } from 'Config/Colors';
 import { COLUMNS } from 'Config/Constants';
+import { roundOnlyIfNeeded } from 'Utils';
+
 const Cell = styled.td`
   padding: 15px 10px;
-  border: 1px solid ${SECONDARY_COLOR};
 `;
 const Row = styled.tr`
-  &:nth-child(odd) {
-    background: ${BRIGHT_COLOR};
-  }
+  border-bottom: 1px solid ${SECONDARY_COLOR};
+  // border-right: 1px solid ${SECONDARY_COLOR};
+  // border-left: 1px solid ${SECONDARY_COLOR};
+
   &:hover {
-    background-color: ${SECONDARY_COLOR};
+    // color: ${BRIGHT_COLOR};
+    background-color: ${BRIGHT_COLOR};
     td {
       border-color: ${MAIN_COLOR};
     }
   }
 `;
+
 export default ({ company }) => {
   return (
     <Row>

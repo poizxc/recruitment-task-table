@@ -2,9 +2,9 @@ const MAIN_COLOR = '#124559';
 const MAIN_FONT_COLOR = '#01161E';
 const SECONDARY_COLOR = '#AEC3B0';
 const SECONDARY_FONT_COLOR = '#598392';
-const BRIGHT_COLOR = '#EFF6E0';
+const BRIGHT_COLOR = '#dee7df ';
 
-module.exports = {
+export {
     MAIN_COLOR,
     MAIN_FONT_COLOR,
     SECONDARY_COLOR,

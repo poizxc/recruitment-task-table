@@ -8,7 +8,11 @@ const Div = styled.div`
 padding-top: 20px;
 width: 100%;
 max-width: 900px;
-margin: 0 auto;
+margin: 0 auto 20px auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
 `;
 export default ({
   companiesOnPage,

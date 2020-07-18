@@ -1,44 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_URL } from 'Config/Constants';
+import { API_URL, ASC, DESC } from 'Config/Constants';
 import Spinner from 'Components/Spinner';
 import CompanyTableHeader from 'Components/CompanyTableHeader';
 import CompanyTableBody from 'Components/CompanyTableBody';
 import CompanyTableControls from 'Components/CompanyTableControls';
-import mockData from './mockData';
 import styled from 'styled-components';
-import moment from 'moment';
+import { splitCompaniesIntoChunks, getIncomes } from 'Utils';
+import { SECONDARY_COLOR, MAIN_COLOR } from 'Config/Colors';
 
-//todo move to utils
-const lessThanMonth = (date) => {
-  return moment(date).isAfter(moment().subtract(1, 'month'));
-};
-
-const splitCompaniesIntoChunks = (companies, size) =>
-  companies.length > size
-    ? [companies.slice(0, size), ...splitCompaniesIntoChunks(companies.slice(size), size)]
-    : [companies];
-
-const getIncomes = (incomes) => {
-  const countedIncomes = incomes.reduce(
-    (prev, curr) => ({
-      totalIncome: parseFloat(prev.totalIncome) + parseFloat(curr.value),
-      lastMonthIncome: lessThanMonth(curr.date)
-        ? parseFloat(prev.lastMonthIncome) + parseFloat(curr.value)
-        : prev.lastMonthIncome,
-    }),
-    { totalIncome: 0, lastMonthIncome: 0 },
-  );
-  return {
-    totalIncome: countedIncomes.totalIncome,
-    avgIncome: countedIncomes.totalIncome / incomes.length,
-    lastMonthIncome: countedIncomes.lastMonthIncome,
-  };
-};
 const CenteredTable = styled.table`
-  margin: 0 auto;
   width: 100%;
   max-width: 900px;
+  border-collapse: collapse;
+  min-width: 600px;
+  margin: 0 auto;
+`;
+const Wrapper = styled.div`
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-scrollbar:horizontal {
+    height: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${MAIN_COLOR};
+    border-radius: 0px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 0px;
+    background-color: ${SECONDARY_COLOR};
+  }
 `;
 export default () => {
   const [companies, setCompanies] = useState([]);
@@ -48,14 +44,14 @@ export default () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [filter, setFilter] = useState('');
   //todo extract constants
-  const [sorting, setSorting] = useState({ column: 'id', order: 'ASC' });
+  const [sorting, setSorting] = useState({ column: 'id', order: ASC });
 
   const handleCompaniesOnPageChange = (event) => {
     setCompaniesOnPage(event.target.value);
     setActiveCompanies(splitCompaniesIntoChunks(companies.flat(), event.target.value));
   };
-  const handleCurrentPageChange = (event) => {
-    setCurrentPage(event.target.value);
+  const handleCurrentPageChange = (page) => {
+    setCurrentPage(page);
   };
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -76,16 +72,16 @@ export default () => {
   const sortCompanies = (companiesArr, column, order) => {
     return companiesArr.flat().sort((company, nextCompany) => {
       if (typeof company[column] === 'number') {
-        return order === 'ASC' ? company[column] - nextCompany[column] : nextCompany[column] - company[column];
+        return order === ASC ? company[column] - nextCompany[column] : nextCompany[column] - company[column];
       }
-      return order === 'ASC'
+      return order === ASC
         ? company[column].localeCompare(nextCompany[column], 'en', { sensitivity: 'base' })
         : nextCompany[column].localeCompare(company[column], 'en', { sensitivity: 'base' });
     });
   };
   const handleSortingChange = (sortingObj) => {
     const onlyOrderChanged = sortingObj.column === sorting.column;
-    const order = onlyOrderChanged ? (sorting.order === 'ASC' ? 'DESC' : 'ASC') : 'ASC';
+    const order = onlyOrderChanged ? (sorting.order === ASC ? DESC : ASC) : ASC;
     setSorting({ ...sortingObj, order });
     const { column } = sortingObj;
     const sortedCompanies = sortCompanies(activeCompanies, column, order);
@@ -128,10 +124,12 @@ export default () => {
         <Spinner />
       ) : (
         <main>
-          <CenteredTable border="0" cellSpacing="0">
-            <CompanyTableHeader sorting={sorting} handleSortingChange={handleSortingChange} />
-            <CompanyTableBody visibleCompanies={activeCompanies[currentPage]} />
-          </CenteredTable>
+          <Wrapper>
+            <CenteredTable border="0" cellSpacing="0">
+              <CompanyTableHeader sorting={sorting} handleSortingChange={handleSortingChange} />
+              <CompanyTableBody visibleCompanies={activeCompanies[currentPage]} />
+            </CenteredTable>
+          </Wrapper>
           <CompanyTableControls
             companiesOnPage={companiesOnPage}
             handleCompaniesOnPageChange={handleCompaniesOnPageChange}
