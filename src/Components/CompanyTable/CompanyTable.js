@@ -4,7 +4,7 @@ import Spinner from 'Components/Spinner';
 import CompanyTableHeader from 'Components/CompanyTableHeader';
 import CompanyTableBody from 'Components/CompanyTableBody';
 import CompanyTableControls from 'Components/CompanyTableControls';
-import { splitCompaniesIntoChunks, sortCompanies, isOneOfIncomeColumn } from 'Utils';
+import { splitCompaniesIntoChunks, sortCompanies, filterThenSortCompanies } from 'Utils';
 import { CenteredTable, Wrapper } from './CompanyTableStyles';
 import UseCompanyData from 'Hooks/UseCompanyData';
 
@@ -33,21 +33,11 @@ export default () => {
   const handleCurrentPageChange = (page) => {
     setCurrentPage(page);
   };
+
   //todo implement debounce
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
-    const filteredCompanies = sortCompanies(
-      companies.flat().filter((company) =>
-        Object.keys(company).some((key) => {
-          if (isOneOfIncomeColumn(company, key)) {
-            return company[key].toFixed(2).toLowerCase().includes(event.target.value.toLowerCase());
-          }
-          return String(company[key]).toLowerCase().includes(event.target.value.toLowerCase());
-        }),
-      ),
-      sorting.column,
-      sorting.order,
-    );
+    const filteredCompanies = filterThenSortCompanies(event.target.value, companies, sorting);
     setCurrentPage(0);
     setActiveCompanies(splitCompaniesIntoChunks(filteredCompanies, companiesOnPage));
   };

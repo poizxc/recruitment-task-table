@@ -39,4 +39,19 @@ const sortCompanies = (companiesArr, column, order) =>
       : nextCompany[column].localeCompare(company[column], 'en', { sensitivity: 'base' });
   });
 
-export { sortCompanies, isOneOfIncomeColumn, splitCompaniesIntoChunks, getIncomes };
+const filterCompanies = (companies, filter) =>
+  companies.flat().filter((company) =>
+    Object.keys(company).some((key) => {
+      if (isOneOfIncomeColumn(company, key)) {
+        return company[key].toFixed(2).toLowerCase().includes(filter.toLowerCase());
+      }
+      return String(company[key]).toLowerCase().includes(filter.toLowerCase());
+    }),
+  );
+
+const filterThenSortCompanies = (filter, companies, sorting) => {
+  const filteredCompanies = filterCompanies(companies, filter);
+  return sortCompanies(filteredCompanies, sorting.column, sorting.order);
+};
+
+export { filterThenSortCompanies, sortCompanies, isOneOfIncomeColumn, splitCompaniesIntoChunks, getIncomes };

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { MAIN_COLOR, SECONDARY_COLOR } from 'Config/Colors';
+
 export const PageNumber = styled.div`
   margin-top: 5px;
   display: inline-block;

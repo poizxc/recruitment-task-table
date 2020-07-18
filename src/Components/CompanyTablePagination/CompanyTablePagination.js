@@ -1,11 +1,12 @@
 import React from 'react';
 import { MobileLastInFlex, Pagination } from './CompanyTablePaginationStyles';
 import CompanyTablePaginationPageNumber from 'Components/CompanyTablePaginationPageNumber';
+
 export default ({ pages, currentPage, handleCurrentPageChange }) => {
-  const renderPagination = () => {
-    const isSurroundingNumber = (pageNumber) => !(pageNumber - 4 > currentPage || pageNumber + 4 < currentPage);
-    const canFitInWindow = pages.length <= 10;
-    return (
+  const isSurroundingNumber = (pageNumber) => !(pageNumber - 4 > currentPage || pageNumber + 4 < currentPage);
+  const canFitInWindow = pages.length <= 10;
+  return (
+    <MobileLastInFlex>
       <Pagination>
         {canFitInWindow
           ? pages.map((pageNumber) => (
@@ -25,7 +26,6 @@ export default ({ pages, currentPage, handleCurrentPageChange }) => {
               ) : null,
             )}
       </Pagination>
-    );
-  };
-  return <MobileLastInFlex>{renderPagination()}</MobileLastInFlex>;
+    </MobileLastInFlex>
+  );
 };
