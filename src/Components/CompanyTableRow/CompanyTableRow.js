@@ -2,8 +2,9 @@ import React from 'react';
 import { COLUMNS } from 'Config/Constants';
 import { Row, Cell } from './CompanyTableRowStyles';
 import { isOneOfIncomeColumn } from 'Utils';
+import PropTypes from 'prop-types';
 
-export default ({ company }) => {
+const CompanyTableRow = ({ company }) => {
   return (
     <Row>
       {Object.keys(COLUMNS).map((key) => (
@@ -12,3 +13,15 @@ export default ({ company }) => {
     </Row>
   );
 };
+
+CompanyTableRow.propTypes = {
+  company: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    totalIncome: PropTypes.number.isRequired,
+    avgIncome: PropTypes.number.isRequired,
+    lastMonthIncome: PropTypes.number.isRequired,
+  }).isRequired,
+};
+export default CompanyTableRow;

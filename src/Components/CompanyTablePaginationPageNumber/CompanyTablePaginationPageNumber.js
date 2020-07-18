@@ -1,7 +1,8 @@
 import React from 'react';
 import { PageNumber } from './CompanyTablePaginationPageNumberStyles';
+import PropTypes from 'prop-types';
 
-export default ({ pageNumber, currentPage, handleCurrentPageChange }) => (
+const CompanyTablePaginationPageNumber = ({ pageNumber, currentPage, handleCurrentPageChange }) => (
   <PageNumber
     className={currentPage === pageNumber ? 'active' : undefined}
     key={pageNumber}
@@ -10,3 +11,9 @@ export default ({ pageNumber, currentPage, handleCurrentPageChange }) => (
     {pageNumber + 1}
   </PageNumber>
 );
+CompanyTablePaginationPageNumber.propTypes = {
+  pageNumber: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  handleCurrentPageChange: PropTypes.func.isRequired,
+};
+export default CompanyTablePaginationPageNumber;

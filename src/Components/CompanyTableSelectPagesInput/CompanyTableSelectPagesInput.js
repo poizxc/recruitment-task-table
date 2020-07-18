@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Wrapper, Select } from './CompanyTableSelectPagesInputStyles';
-
-export default ({ companiesOnPage, handleCompaniesOnPageChange }) => {
+import PropTypes from 'prop-types';
+const CompanyTableSelectPagesInput = ({ companiesOnPage, handleCompaniesOnPageChange }) => {
   const select = useRef(null);
   const handleSelect = (e) => {
     select.current.blur();
@@ -20,3 +20,10 @@ export default ({ companiesOnPage, handleCompaniesOnPageChange }) => {
     </Wrapper>
   );
 };
+
+CompanyTableSelectPagesInput.propTypes = {
+  companiesOnPage: PropTypes.number.isRequired,
+  handleCompaniesOnPageChange: PropTypes.func.isRequired,
+};
+
+export default CompanyTableSelectPagesInput;

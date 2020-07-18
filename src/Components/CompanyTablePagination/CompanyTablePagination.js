@@ -1,8 +1,9 @@
 import React from 'react';
 import { MobileLastInFlex, Pagination } from './CompanyTablePaginationStyles';
 import CompanyTablePaginationPageNumber from 'Components/CompanyTablePaginationPageNumber';
+import PropTypes from 'prop-types';
 
-export default ({ pages, currentPage, handleCurrentPageChange }) => {
+const CompanyTablePagination = ({ pages, currentPage, handleCurrentPageChange }) => {
   const isSurroundingNumber = (pageNumber) => !(pageNumber - 4 > currentPage || pageNumber + 4 < currentPage);
   const canFitInWindow = pages.length <= 10;
   return (
@@ -11,6 +12,7 @@ export default ({ pages, currentPage, handleCurrentPageChange }) => {
         {canFitInWindow
           ? pages.map((pageNumber) => (
               <CompanyTablePaginationPageNumber
+                key={pageNumber}
                 pageNumber={pageNumber}
                 currentPage={currentPage}
                 handleCurrentPageChange={handleCurrentPageChange}
@@ -19,6 +21,7 @@ export default ({ pages, currentPage, handleCurrentPageChange }) => {
           : pages.map((pageNumber) =>
               isSurroundingNumber(pageNumber) ? (
                 <CompanyTablePaginationPageNumber
+                  key={pageNumber}
                   pageNumber={pageNumber}
                   currentPage={currentPage}
                   handleCurrentPageChange={handleCurrentPageChange}
@@ -29,3 +32,10 @@ export default ({ pages, currentPage, handleCurrentPageChange }) => {
     </MobileLastInFlex>
   );
 };
+
+CompanyTablePagination.propTypes = {
+  pages: PropTypes.array.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  handleCurrentPageChange: PropTypes.func.isRequired,
+};
+export default CompanyTablePagination;

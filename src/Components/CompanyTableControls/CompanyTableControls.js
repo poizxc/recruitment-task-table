@@ -3,8 +3,9 @@ import CompanyTableFilterInput from 'Components/CompanyTableFilterInput';
 import CompanyTableSelectPagesInput from 'Components/CompanyTableSelectPagesInput';
 import CompanyTablePagination from 'Components/CompanyTablePagination';
 import { Wrapper } from './CompanyTableControlsStyles';
+import PropTypes from 'prop-types';
 
-export default ({
+const CompanyTableControls = ({
   companiesOnPage,
   currentPage,
   handleCompaniesOnPageChange,
@@ -29,3 +30,15 @@ export default ({
     </Wrapper>
   );
 };
+
+CompanyTableControls.propTypes = {
+  companiesOnPage: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  handleCompaniesOnPageChange: PropTypes.func.isRequired,
+  handleCurrentPageChange: PropTypes.func.isRequired,
+  possiblePages: PropTypes.number.isRequired,
+  filter: PropTypes.string.isRequired,
+  handleFilterChange: PropTypes.func.isRequired,
+};
+
+export default CompanyTableControls;

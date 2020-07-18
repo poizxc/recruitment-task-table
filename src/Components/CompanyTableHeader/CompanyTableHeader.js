@@ -1,8 +1,8 @@
 import React from 'react';
 import { COLUMNS } from 'Config/Constants';
 import { Header, Cell } from './CompanyTableHeaderStyles';
-
-export default ({ sorting, handleSortingChange }) => (
+import PropTypes from 'prop-types';
+const CompanyTableHeader = ({ sorting, handleSortingChange }) => (
   <Header>
     <tr>
       {Object.keys(COLUMNS).map((key) => (
@@ -17,3 +17,11 @@ export default ({ sorting, handleSortingChange }) => (
     </tr>
   </Header>
 );
+CompanyTableHeader.propTypes = {
+  sorting: PropTypes.shape({
+    column: PropTypes.oneOf(['id', 'name', 'city', 'totalIncome', 'avgIncome', 'lastMonthIncome']).isRequired,
+    order: PropTypes.oneOf(['ASC', 'DESC']),
+  }).isRequired,
+  handleSortingChange: PropTypes.func.isRequired,
+};
+export default CompanyTableHeader;
