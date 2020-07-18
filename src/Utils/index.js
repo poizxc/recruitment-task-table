@@ -1,5 +1,5 @@
 import moment from 'moment';
-
+import { ASC, DESC } from 'Config/Constants';
 const lessThanMonth = (date) => {
   return moment(date).isAfter(moment().subtract(1, 'month'));
 };
@@ -27,5 +27,14 @@ const getIncomes = (incomes) => {
 };
 
 const isOneOfIncomeColumn = (company, key) => typeof company[key] === 'number' && key !== 'id';
-
-export { isOneOfIncomeColumn, splitCompaniesIntoChunks, getIncomes };
+const sortCompanies = (companiesArr, column, order) => {
+  return companiesArr.flat().sort((company, nextCompany) => {
+    if (typeof company[column] === 'number') {
+      return order === ASC ? company[column] - nextCompany[column] : nextCompany[column] - company[column];
+    }
+    return order === ASC
+      ? company[column].localeCompare(nextCompany[column], 'en', { sensitivity: 'base' })
+      : nextCompany[column].localeCompare(company[column], 'en', { sensitivity: 'base' });
+  });
+};
+export { sortCompanies, isOneOfIncomeColumn, splitCompaniesIntoChunks, getIncomes };
