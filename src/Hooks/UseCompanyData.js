@@ -5,7 +5,7 @@ import { API_URL, ASC } from 'Config/Constants';
 
 export default () => {
   const [companies, setCompanies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeCompanies, setActiveCompanies] = useState([]);
   const [companiesOnPage, setCompaniesOnPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(0);
@@ -15,6 +15,7 @@ export default () => {
   useEffect(() => {
     const getCompanyData = async () => {
       try {
+        setIsLoading(true);
         const { data: companiesData } = await axios.get(`${API_URL}/companies`);
         const details = sortCompanies(await getDetailedData(companiesData), sorting.column, sorting.order);
         setActiveCompanies(splitCompaniesIntoChunks(details, companiesOnPage));

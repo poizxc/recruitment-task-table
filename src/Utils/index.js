@@ -2,7 +2,7 @@ import moment from 'moment';
 import { ASC } from 'Config/Constants';
 
 const lessThanMonth = (date) => {
-  return moment(date).isAfter(moment().subtract(1, 'month'));
+  return moment(date).isAfter(moment().subtract(1, 'month'), 'milliseconds');
 };
 
 const splitCompaniesIntoChunks = (companies, size) =>
@@ -54,4 +54,12 @@ const filterThenSortCompanies = (filter, companies, sorting) => {
   return sortCompanies(filteredCompanies, sorting.column, sorting.order);
 };
 
-export { filterThenSortCompanies, sortCompanies, isOneOfIncomeColumn, splitCompaniesIntoChunks, getIncomes };
+export {
+  filterThenSortCompanies,
+  sortCompanies,
+  filterCompanies,
+  isOneOfIncomeColumn,
+  splitCompaniesIntoChunks,
+  getIncomes,
+  lessThanMonth,
+};
