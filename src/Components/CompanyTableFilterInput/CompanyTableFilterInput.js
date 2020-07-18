@@ -1,5 +1,6 @@
 import React from 'react';
 import { Wrapper, StyledInput } from './CompanyTableFilterInputStyles';
+
 export default ({ filter, handleFilterChange }) => {
   return (
     <Wrapper>

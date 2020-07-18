@@ -26,11 +26,14 @@ export default () => {
 
   const handleCompaniesOnPageChange = (event) => {
     setCompaniesOnPage(event.target.value);
+    setCurrentPage(0);
     setActiveCompanies(splitCompaniesIntoChunks(activeCompanies.flat(), event.target.value));
   };
+
   const handleCurrentPageChange = (page) => {
     setCurrentPage(page);
   };
+  //todo implement debounce
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
     const filteredCompanies = sortCompanies(

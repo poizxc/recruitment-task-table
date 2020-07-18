@@ -1,16 +1,31 @@
 import React from 'react';
-import { MobileLastInFlex, PageNumber } from './CompanyTablePaginationStyles';
-
-export default ({ pages, currentPage, handleCurrentPageChange }) => (
-  <MobileLastInFlex>
-    {pages.map((pageNumber) => (
-      <PageNumber
-        className={currentPage === pageNumber ? 'active' : undefined}
-        key={pageNumber}
-        onClick={() => handleCurrentPageChange(pageNumber)}
-      >
-        {pageNumber + 1}
-      </PageNumber>
-    ))}
-  </MobileLastInFlex>
-);
+import { MobileLastInFlex, Pagination } from './CompanyTablePaginationStyles';
+import CompanyTablePaginationPageNumber from 'Components/CompanyTablePaginationPageNumber';
+export default ({ pages, currentPage, handleCurrentPageChange }) => {
+  const renderPagination = () => {
+    const isSurroundingNumber = (pageNumber) => !(pageNumber - 4 > currentPage || pageNumber + 4 < currentPage);
+    const canFitInWindow = pages.length <= 10;
+    return (
+      <Pagination>
+        {canFitInWindow
+          ? pages.map((pageNumber) => (
+              <CompanyTablePaginationPageNumber
+                pageNumber={pageNumber}
+                currentPage={currentPage}
+                handleCurrentPageChange={handleCurrentPageChange}
+              />
+            ))
+          : pages.map((pageNumber) =>
+              isSurroundingNumber(pageNumber) ? (
+                <CompanyTablePaginationPageNumber
+                  pageNumber={pageNumber}
+                  currentPage={currentPage}
+                  handleCurrentPageChange={handleCurrentPageChange}
+                />
+              ) : null,
+            )}
+      </Pagination>
+    );
+  };
+  return <MobileLastInFlex>{renderPagination()}</MobileLastInFlex>;
+};

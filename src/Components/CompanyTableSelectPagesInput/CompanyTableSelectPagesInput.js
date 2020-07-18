@@ -10,6 +10,8 @@ export default ({ companiesOnPage, handleCompaniesOnPageChange }) => {
   return (
     <Wrapper>
       <Select ref={select} value={companiesOnPage} onChange={handleSelect}>
+        <option value={5}>5</option>
+        <option value={10}>10</option>
         <option value={15}>15</option>
         <option value={20}>20</option>
         <option value={25}>25</option>

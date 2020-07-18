@@ -8,7 +8,7 @@ export default ({ sorting, handleSortingChange }) => (
       {Object.keys(COLUMNS).map((key) => (
         <Cell
           key={key}
-          className={key === sorting.column && sorting.order.toLowerCase()}
+          className={key === sorting.column && `active ${sorting.order.toLowerCase()}`}
           onClick={() => handleSortingChange({ column: key })}
         >
           {COLUMNS[key]}
