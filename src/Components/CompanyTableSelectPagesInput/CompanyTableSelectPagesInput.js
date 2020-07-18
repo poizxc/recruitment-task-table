@@ -3,9 +3,9 @@ import { Wrapper, Select } from './CompanyTableSelectPagesInputStyles';
 import PropTypes from 'prop-types';
 const CompanyTableSelectPagesInput = ({ companiesOnPage, handleCompaniesOnPageChange }) => {
   const select = useRef(null);
-  const handleSelect = (e) => {
+  const handleSelect = (event) => {
     select.current.blur();
-    handleCompaniesOnPageChange(e);
+    handleCompaniesOnPageChange(parseInt(event.target.value, 10));
   };
   return (
     <Wrapper>

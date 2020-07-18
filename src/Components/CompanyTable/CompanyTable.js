@@ -7,7 +7,6 @@ import CompanyTableControls from 'Components/CompanyTableControls';
 import { splitCompaniesIntoChunks, sortCompanies, filterThenSortCompanies } from 'Utils';
 import { CenteredTable, Wrapper } from './CompanyTableStyles';
 import UseCompanyData from 'Hooks/UseCompanyData';
-
 export default () => {
   const {
     sorting,
@@ -24,20 +23,19 @@ export default () => {
     companies,
   } = UseCompanyData();
 
-  const handleCompaniesOnPageChange = (event) => {
-    setCompaniesOnPage(event.target.value);
+  const handleCompaniesOnPageChange = (newCompaniesOnPage) => {
+    setCompaniesOnPage(newCompaniesOnPage);
     setCurrentPage(0);
-    setActiveCompanies(splitCompaniesIntoChunks(activeCompanies.flat(), event.target.value));
+    setActiveCompanies(splitCompaniesIntoChunks(activeCompanies.flat(), newCompaniesOnPage));
   };
 
   const handleCurrentPageChange = (page) => {
     setCurrentPage(page);
   };
 
-  //todo implement debounce
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-    const filteredCompanies = filterThenSortCompanies(event.target.value, companies, sorting);
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    const filteredCompanies = filterThenSortCompanies(newFilter, companies, sorting);
     setCurrentPage(0);
     setActiveCompanies(splitCompaniesIntoChunks(filteredCompanies, companiesOnPage));
   };
