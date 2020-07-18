@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 const lessThanMonth = (date) => {
   return moment(date).isAfter(moment().subtract(1, 'month'));
 };
@@ -24,4 +25,7 @@ const getIncomes = (incomes) => {
     lastMonthIncome: countedIncomes.lastMonthIncome,
   };
 };
-export { splitCompaniesIntoChunks, getIncomes };
+
+const isOneOfIncomeColumn = (company, key) => typeof company[key] === 'number' && key !== 'id';
+
+export { isOneOfIncomeColumn, splitCompaniesIntoChunks, getIncomes };

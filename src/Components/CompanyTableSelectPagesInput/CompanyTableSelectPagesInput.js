@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Wrapper, Select } from './CompanyTableSelectPagesInputStyles';
+
 export default ({ companiesOnPage, handleCompaniesOnPageChange }) => {
   const select = useRef(null);
   const handleSelect = (e) => {

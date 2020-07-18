@@ -1,6 +1,7 @@
 import React from 'react';
 import { COLUMNS } from 'Config/Constants';
 import { Header, Cell } from './CompanyTableHeaderStyles';
+
 export default ({ sorting, handleSortingChange }) => (
   <Header>
     <tr>

@@ -5,7 +5,7 @@ import Spinner from 'Components/Spinner';
 import CompanyTableHeader from 'Components/CompanyTableHeader';
 import CompanyTableBody from 'Components/CompanyTableBody';
 import CompanyTableControls from 'Components/CompanyTableControls';
-import { splitCompaniesIntoChunks, getIncomes } from 'Utils';
+import { splitCompaniesIntoChunks, getIncomes, isOneOfIncomeColumn } from 'Utils';
 import { CenteredTable, Wrapper } from './CompanyTableStyles';
 export default () => {
   const [companies, setCompanies] = useState([]);
@@ -14,7 +14,6 @@ export default () => {
   const [companiesOnPage, setCompaniesOnPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(0);
   const [filter, setFilter] = useState('');
-  //todo extract constants
   const [sorting, setSorting] = useState({ column: 'id', order: ASC });
 
   const handleCompaniesOnPageChange = (event) => {
@@ -27,13 +26,14 @@ export default () => {
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
     const filteredCompanies = sortCompanies(
-      companies
-        .flat()
-        .filter((company) =>
-          Object.keys(company).some((key) =>
-            String(company[key]).toLowerCase().includes(event.target.value.toLowerCase()),
-          ),
-        ),
+      companies.flat().filter((company) =>
+        Object.keys(company).some((key) => {
+          if (isOneOfIncomeColumn(company, key)) {
+            return company[key].toFixed(2).toLowerCase().includes(event.target.value.toLowerCase());
+          }
+          return String(company[key]).toLowerCase().includes(event.target.value.toLowerCase());
+        }),
+      ),
       sorting.column,
       sorting.order,
     );
