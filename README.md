@@ -6,18 +6,20 @@ This is The Table Project that covers **Filtering**, **Sorting**, dynamic **pagi
 
 ## Table of Contents
 
-- [Prerequisites](#Prerequisites)
-- [Installing](#Installing)
-- [Running Application](#Running&#32;Application)
-- [Running Tests](#Running&#32;Tests)
-- **[Notes To Reviewers](#Notes&#32;To&#32;Reviewers)**
-- **[Tech Stack](#Tech&#32;Stack)**
-  - [Library / Framework](#Library&#32;/&#32;Framework)
-  - [State Management](#State&#32;Management)
-  - [Type Checking](#Type&#32;Checking)
-  - [Styling](Styling)
-  - [AJAX](#AJAX)
-  - [Testing](#Testing)
+- [Recruitment Task Table](#recruitment-task-table)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Installing](#installing)
+  - [Running Application](#running-application)
+  - [Running Tests](#running-tests)
+  - **[Notes To Reviewers](#notes-to-reviewers)**
+  - **[Tech Stack](#tech-stack)**
+    - [Library / Framework](#library--framework)
+    - [State Management](#state-management)
+    - [Type Checking](#type-checking)
+    - [Styling](#styling)
+    - [AJAX](#ajax)
+    - [Testing](#testing)
 
 ## Prerequisites
 
@@ -100,7 +102,7 @@ To Style the whole application i used **styled-components**, to achieve same loo
 
 To make **http** calls I used **axios** just to have possibility to cancel the request in easy way and use interceptors. I didn't used these features so i probably should rewrite the whole thing to use native **fetch** function - just to save the bits :P
 
-#### Testing
+### Testing
 
 As I mentioned earlier this is app bootstrapped with **CRA** so I sticked with **jest** and **react-testing-library**.
 
