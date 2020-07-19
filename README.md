@@ -1,68 +1,108 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Recruitment Task Table
 
-## Available Scripts
+![App Photo](app.png)
 
-In the project directory, you can run:
+This is The Table Project that covers **Filtering**, **Sorting**, dynamic **pagination** it was bootstrapped with **Create-React-App**, original Readme can be found in README.old.md file.
 
-### `yarn start`
+## Table of Contents
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [Prerequisites](#Prerequisites)
+- [Installing](#Installing)
+- [Running Application](#Running&#32;Application)
+- [Running Tests](#Running&#32;Tests)
+- **[Notes To Reviewers](#Notes&#32;To&#32;Reviewers)**
+- **[Tech Stack](#Tech&#32;Stack)**
+  - [Library / Framework](#Library&#32;/&#32;Framework)
+  - [State Management](#State&#32;Management)
+  - [Type Checking](#Type&#32;Checking)
+  - [Styling](Styling)
+  - [AJAX](#AJAX)
+  - [Testing](#Testing)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Prerequisites
 
-### `yarn test`
+**Node** (>=10.16.0)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+however i recommend using latest version 14.5.0 (at the time of writing)
 
-### `yarn build`
+## Installing
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To install **Recruitment-Task-Table** use **Yarn** or **NPM**
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+yarn install
+```
 
-### `yarn eject`
+## Running Application
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To Start Development Server you need to type :
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+yarn start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+or
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+npm run start
+```
 
-## Learn More
+## Running Tests
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To run tests you need to type :
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+yarn test
+```
 
-### Code Splitting
+or
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```
+npm run test
+```
 
-### Analyzing the Bundle Size
+## Notes To Reviewers
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+On App Initialization I am getting all the needed data once and then I calculate incomes, so it can take a while, depends on your Internet Connection :/.
 
-### Making a Progressive Web App
+At first I was thinking about requesting only the income data for companies that are visible. But the task description required sorting and filtering through all columns in Table, so I have to stick with pre-fetching and pre-calculating all the data.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+I totally didn't see the point of implementing sorting algorithm. I ended up with using native **Array.prototype.sort** function that I believe under the hood uses **Timsort** in **V8** and **mergesort** in **Gecko**, probably with many optimizations, So I decided it will be faster than writing my own implementation of some sorting algorithm and reinventing the wheel once again.
 
-### Advanced Configuration
+I added small select input to change the number of records on one page, You didn't specified it in task description but I believe that is something that every responsive table should have to not force the user to scroll the whole page just to get to controls,
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+In task description there was nothing about compatibility so it may not work correctly on older browsers, but all modern applications should not have any problems :)
 
-### Deployment
+## Tech Stack
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+### Library / Framework
 
-### `yarn build` fails to minify
+I Decided to use **React** for this application, I was trying to follow the crowd so i ended up with hooks based application.
+I didn't wrote any **webpack** config for this project i simply used **create-react-app**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### State Management
+
+I didn't used any state management libraries such as **redux** or **mobx** - I decided that it will overcomplicate things in such small app, however I probably should use native context solution - just to clean the whole app a little bit.
+
+### Type Checking
+
+I didn't used any static type checking solutions such as **typescript** or **flow**, again I decided it will overcomplicate things, but I used **PropTypes** to have some control on types :)
+
+### Styling
+
+To Style the whole application i used **styled-components**, to achieve same look on every modern browser i used normalize. The App UI is probably not the strongest point of the whole project, but i didn't wanted that styling process to took days ;d
+
+### AJAX
+
+To make **http** calls I used **axios** just to have possibility to cancel the request in easy way and use interceptors. I didn't used these features so i probably should rewrite the whole thing to use native **fetch** function - just to save the bits :P
+
+#### Testing
+
+As I mentioned earlier this is app bootstrapped with **CRA** so I sticked with **jest** and **react-testing-library**.
+
+
+[Back to top](#Recruitment&#32;Task&#32;Table)
