@@ -107,4 +107,4 @@ To make **http** calls I used **axios** just to have possibility to cancel the r
 As I mentioned earlier this is app bootstrapped with **CRA** so I sticked with **jest** and **react-testing-library**.
 
 
-[Back to top](#Recruitment&#32;Task&#32;Table)
+[Back to top](#Recruitment-Task-Table)
